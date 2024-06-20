@@ -1,4 +1,5 @@
-import { ClassSerializerInterceptor, Controller, Get, Inject, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Inject, Post, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
@@ -9,5 +10,12 @@ export class UsersController {
     @Get('')
     getUsers(){
         return this.userService.getUsers()
+    }
+
+    @Post('create')
+    @UsePipes(ValidationPipe)
+    createUser(@Body() createUserDto: CreateUserDto) {
+        // console.log(createUserDto)
+        return this.userService.createUser(createUserDto);
     }
 }
