@@ -1,4 +1,5 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Inject, Post, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Inject, Post, UseGuards, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { AuthenticatedGuard } from 'src/auth/utils/LocalGuard';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 
@@ -6,6 +7,7 @@ import { UsersService } from 'src/users/services/users/users.service';
 export class UsersController {
     constructor(@Inject('USER_SERVICE') private readonly userService: UsersService){}
 
+    @UseGuards(AuthenticatedGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Get('')
     getUsers(){
