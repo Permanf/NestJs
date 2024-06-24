@@ -7,9 +7,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import entities from './typeorm';
 import { PassportModule } from '@nestjs/passport';
+import { GatewayModule } from './gateway/gateway.module';
+import { SocketModule } from './socket/socket.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
-  imports: [CustomersModule, UsersModule, TypeOrmModule.forRoot({
+  imports: [
+    ThrottlerModule.forRoot([{
+      ttl: 10,
+      limit: 2,
+    }]),
+    SocketModule,
+    GatewayModule,
+    CustomersModule, 
+    UsersModule, 
+    TypeOrmModule.forRoot({
     type: 'postgres',
     host: 'localhost',
     port: 5432,
@@ -21,8 +34,14 @@ import { PassportModule } from '@nestjs/passport';
   }), 
   AuthModule,
   PassportModule.register({ session: true }),
-],
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    }
+  ],
 })
 export class AppModule {}
