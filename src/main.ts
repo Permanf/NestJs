@@ -11,7 +11,7 @@ async function bootstrap() {
   // Define and initialize the data source
   const AppDataSource = new DataSource({
     type: 'postgres', // Change to your DBMS (e.g., 'postgres')
-    host: 'localhost',
+    host: 'postgres_db',
     port: 5432, // Adjust for your database
     username: 'postgres',
     password: 'hello123',

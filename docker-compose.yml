@@ -1,0 +1,27 @@
+services:
+  nestjs_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=value
+      - NODE_ENV=development
+    volumes:
+      - ./src:/usr/src/app/src
+    networks:
+      - test
+  postgres_db:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=hello123
+      - POSTGRES_DB=nestjs-task
+    ports:
+      - "5432:5432"
+    networks:
+      -  test
+networks:
+  test:
+    driver: bridge

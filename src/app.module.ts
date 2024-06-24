@@ -24,7 +24,7 @@ import { APP_GUARD } from '@nestjs/core';
     UsersModule, 
     TypeOrmModule.forRoot({
     type: 'postgres',
-    host: 'localhost',
+    host: 'postgres_db',
     port: 5432,
     username: 'postgres',
     password: 'hello123',
